@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>NovaShop | Modern E-Commerce</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
+}
+
+body{
+  background:#020617;
+  color:#f8fafc;
+}
+
+
+/* Cart */
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid #1e293b;
+}
+
+.cart-item button{
+  background:#0f172a;
+  color:white;
+  border:1px solid #38bdf8;
+  border-radius:6px;
+  padding:2px 8px;
+  margin-left:5px;
+  cursor:pointer;
+}
+
+.cart-item button:hover{
+  background:#38bdf8;
+  color:#020617;
+}
+
+a{text-decoration:none;color:inherit}
+
+/* Navbar */
+
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 8%;
+  background:#020617;
+  border-bottom:1px solid #1e293b;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  font-size:1.6rem;
+  font-weight:700;
+  color:#38bdf8;
+}
+
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:25px;
+}
+
+nav ul li a:hover{
+  color:#38bdf8;
+}
+
+.cart{
+  background:#38bdf8;
+  color:#020617;
+  padding:6px 14px;
+  border-radius:20px;
+  font-weight:600;
+}
+
+/* Hero */
+
+.hero{
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:60px 8%;
+  background:linear-gradient(to right,#020617,#0f172a);
+}
+
+.hero h1{
+  font-size:3rem;
+}
+
+.hero span{
+  color:#38bdf8;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 30px;
+  background:#38bdf8;
+  color:#020617;
+  border-radius:30px;
+  font-weight:600;
+}
+
+/* Sections */
+
+section{
+  padding:80px 8%;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+/* Products */
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:25px;
+}
+
+.product-card{
+  background:#020617;
+  border-radius:15px;
+  border:1px solid #1e293b;
+  overflow:hidden;
+  transition:0.3s;
+}
+
+.product-card:hover{
+  border-color:#38bdf8;
+  transform:translateY(-6px);
+}
+
+.product-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.product-info{
+  padding:20px;
+  text-align:center;
+}
+
+.price{
+  color:#38bdf8;
+  font-weight:600;
+  margin:8px 0;
+}
+
+.add-btn{
+  padding:8px 18px;
+  border-radius:20px;
+  border:1px solid #38bdf8;
+  background:#0f172a;
+  cursor:pointer;
+}
+
+.add-btn:hover{
+  background:#38bdf8;
+  color:#020617;
+}
+
+/* Checkout */
+
+.checkout{
+  max-width:500px;
+  margin:auto;
+  background:#020617;
+  padding:25px;
+  border-radius:15px;
+  border:1px solid #1e293b;
+  text-align:center;
+}
+
+.checkout input{
+  width:100%;
+  padding:10px;
+  margin-bottom:12px;
+  border-radius:8px;
+  border:none;
+  background:#0f172a;
+  color:white;
+}
+
+/* Footer */
+
+footer{
+  background:#020617;
+  padding:25px;
+  text-align:center;
+  border-top:1px solid #1e293b;
+  opacity:0.8;
+}
+
+@media(max-width:768px){
+  nav ul{display:none;}
+  .hero h1{font-size:2rem;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav>
+  <div class="logo">NovaShop</div>
+
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#checkout">Checkout</a></li>
+  </ul>
+
+  <div class="cart">
+    🛒 <span id="cartCount">0</span>
+  </div>
+</nav>
+
+<section id="checkout">
+
+  <div class="section-title">
+    <h2>Your Cart</h2>
+    <p>Review your items</p>
+  </div>
+
+
+  <div class="checkout">
+
+    <div id="cartBox"></div>
+
+    <hr style="margin:15px 0;opacity:0.2">
+
+    <form onsubmit="placeOrder(event)">
+
+      <input type="text" id="name" placeholder="Full Name" required>
+
+      <input type="email" id="email" placeholder="Email" required>
+
+      <p>Total: $<span id="totalPrice">0</span></p>
+
+      <button class="btn" type="submit">
+        Checkout
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+  <div>
+    <h1>Shop <span>Smarter</span></h1>
+    <p>Real-time products powered by backend</p>
+    <a href="#shop" class="btn">Shop Now</a>
+  </div>
+</section>
+
+
+<!-- PRODUCTS -->
+
+<section id="shop">
+
+  <div class="section-title">
+    <h2>Products</h2>
+    <p>Loaded from Backend</p>
+  </div>
+
+  <div class="products" id="productList">
+    <!-- Backend loads here -->
+  </div>
+
+</section>
+
+
+<!-- CHECKOUT -->
+
+<section id="checkout">
+
+  <div class="section-title">
+    <h2>Checkout</h2>
+    <p>Place Your Order</p>
+  </div>
+
+  <div class="checkout">
+
+    <form onsubmit="placeOrder(event)">
+
+      <input type="text" id="name" placeholder="Full Name" required>
+
+      <input type="email" id="email" placeholder="Email" required>
+
+      <p>Total: $<span id="totalPrice">0</span></p>
+
+      <button class="btn" type="submit">
+        Place Order
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+  © 2026 NovaShop | Full Stack Project
+</footer>
+
+
+
+<script>
+
+const API = "http://127.0.0.1:5000/api";
+
+let cart = [];
+
+
+// ================= LOAD PRODUCTS =================
+
+async function loadProducts(){
+
+  const res = await fetch(`${API}/products`);
+  const data = await res.json();
+
+  const list = document.getElementById("productList");
+
+  list.innerHTML = "";
+
+  data.forEach(p => {
+
+    list.innerHTML += `
+
+      <div class="product-card">
+
+        <img src="${p.image}">
+
+        <div class="product-info">
+
+          <h3>${p.name}</h3>
+
+          <div class="price">$${p.price}</div>
+
+          <button class="add-btn"
+            onclick="addToCart(${p.id}, '${p.name}', ${p.price})">
+            Add to Cart
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+// ================= CART SYSTEM =================
+
+function addToCart(id,name,price){
+
+  const item = cart.find(p => p.id === id);
+
+  if(item){
+    item.qty++;
+  }else{
+    cart.push({
+      id:id,
+      name:name,
+      price:price,
+      qty:1
+    });
+  }
+
+  renderCart();
+}
+
+
+function removeItem(id){
+
+  cart = cart.filter(p => p.id !== id);
+
+  renderCart();
+}
+
+
+function changeQty(id,val){
+
+  const item = cart.find(p => p.id === id);
+
+  item.qty += val;
+
+  if(item.qty <= 0){
+    removeItem(id);
+  }
+
+  renderCart();
+}
+
+
+
+// ================= RENDER CART =================
+
+function renderCart(){
+
+  const box = document.getElementById("cartBox");
+
+  box.innerHTML = "";
+
+  let total = 0;
+  let count = 0;
+
+  cart.forEach(p => {
+
+    total += p.price * p.qty;
+    count += p.qty;
+
+    box.innerHTML += `
+
+      <div class="cart-item">
+
+        <h4>${p.name}</h4>
+
+        <p>$${p.price} × ${p.qty}</p>
+
+        <div>
+
+          <button onclick="changeQty(${p.id},1)">+</button>
+
+          <button onclick="changeQty(${p.id},-1)">-</button>
+
+          <button onclick="removeItem(${p.id})">❌</button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  document.getElementById("cartCount").innerText = count;
+
+  document.getElementById("totalPrice").innerText =
+    total.toFixed(2);
+}
+
+
+
+// ================= ORDER =================
+
+async function placeOrder(e){
+
+  e.preventDefault();
+
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+
+  const order = {
+
+    customer:
+      document.getElementById("name").value,
+
+    email:
+      document.getElementById("email").value,
+
+    items:cart,
+
+    total:
+      cart.reduce((s,p)=>s+p.price*p.qty,0)
+
+  };
+
+
+  const res = await fetch(`${API}/orders`,{
+
+    method:"POST",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body:JSON.stringify(order)
+
+  });
+
+
+  const data = await res.json();
+
+  alert(data.message);
+
+  cart = [];
+
+  renderCart();
+
+  e.target.reset();
+
+}
+
+
+
+// ================= INIT =================
+
+loadProducts();
+
+</script>
+
+
+</body>
+</html>
